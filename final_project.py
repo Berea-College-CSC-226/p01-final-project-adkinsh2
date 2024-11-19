@@ -54,7 +54,16 @@ class StartMenu:
 
 class Game:
     def __init__(self):
-
+        self.size = 800, 600
+        self.running = True
+        pygame.init()
+        self.screen = pygame.display.set_mode(self.size)
+        self.screen.fill('#24026D')
+        self.clock = pygame.time.Clock()
+        self.player = None #TODO set these to respective classes
+        self.doomship = None
+        self.playerAttack = None
+        self.enemyAttack = None
 
 def main():
     startGame = StartMenu()

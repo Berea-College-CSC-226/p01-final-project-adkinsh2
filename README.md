@@ -53,7 +53,10 @@ Reflect on what you’ve done so far. How’s it going? Are you feeling behind/a
 What has surprised you so far? Describe your general feelings. Be honest with yourself; this section is for you, not me.
 
 ```
-    **Replace this text with your reflection
+    **Right now, I'm concerned that I won't be able to use test suites for testing all my code,
+    as the project I am doing relies mostly on actions being performed inside a window.
+    I hope that I won't have to rely on suites in order to play test my game and ensure all components work as planned.
+    I feel fairly on pace right now as long as I keep my current work balance.**
 ```
 
 ---
