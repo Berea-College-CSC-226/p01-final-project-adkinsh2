@@ -64,6 +64,28 @@ class Game:
         self.doomship = None
         self.playerAttack = None
         self.enemyAttack = None
+        self.playerHealth = 3
+        self.enemyHealth = 10
+
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            if pygame.sprite.spritecollide(self.player, [self.enemyAttack], False):
+                self.playerHealth -= 1
+                if self.playerHealth > 1:
+                    font = pygame.font.SysFont("ComicSans", 36)
+                    txt = font.render('Game over...', True, "#E83E57")
+                    self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
+            if pygame.sprite.spritecollide(self.doomship, [self.playerAttack], False):
+                self.enemyHealth -= 1
+                if self.enemyHealth > 1:
+                    font = pygame.font.SysFont("ComicSans", 36)
+                    txt = font.render('Congratulations! But can you do it faster?', True, "#5EE1F3")
+                    self.screen.blit(txt, (self.size[0] // 2, self.size[1] - 100))
+
+        pygame.quit()
 
 def main():
     startGame = StartMenu()
