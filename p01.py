@@ -17,6 +17,8 @@
 
 import tkinter as tk
 import pygame, random
+from p01_npc import NPC
+from p01_player import Player
 
 class StartMenu:
     def __init__(self, windowtitle="Back in the 80s Space Shooter!"):
@@ -50,7 +52,7 @@ class StartMenu:
 
     def startButton_handler(self):
         game = Game()
-        game.run()
+        game.run(self.currentDifficulty)
 
 class Game:
     def __init__(self):
@@ -60,14 +62,24 @@ class Game:
         self.screen = pygame.display.set_mode(self.size)
         self.screen.fill('#24026D')
         self.clock = pygame.time.Clock()
-        self.player = None #TODO set these to respective classes
-        self.doomship = None
+        self.player = Player(self.size) #TODO set these to respective classes
+        self.doomShip = NPC(self.size)
         self.playerAttack = None
         self.enemyAttack = None
-        self.playerHealth = 3
-        self.enemyHealth = 10
+        self.playerHealth = 0
+        self.enemyHealth = 0
 
-    def run(self):
+    def run(self,difficulty):
+        if difficulty == 0:
+            self.playerHealth = 5
+            self.enemyHealth = 5
+        elif difficulty == 1:
+            self.playerHealth = 3
+            self.enemyHealth = 8
+        elif difficulty >= 2:
+            self.playerHealth = 1
+            self.enemyHealth = 10
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,12 +90,22 @@ class Game:
                     font = pygame.font.SysFont("ComicSans", 36)
                     txt = font.render('Game over...', True, "#E83E57")
                     self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
-            if pygame.sprite.spritecollide(self.doomship, [self.playerAttack], False):
+            if pygame.sprite.spritecollide(self.doomShip, [self.playerAttack], False):
                 self.enemyHealth -= 1
                 if self.enemyHealth > 1:
                     font = pygame.font.SysFont("ComicSans", 36)
                     txt = font.render('Congratulations! But can you do it faster?', True, "#5EE1F3")
                     self.screen.blit(txt, (self.size[0] // 2, self.size[1] - 100))
+            else:
+                self.tuna.movement(pygame.key.get_pressed())
+                self.tacocat.movement()
+                self.whiskers.movement()
+                self.screen.fill('#9CBEBA')
+                self.screen.blit(self.tuna.surf, self.tuna.rect)
+                self.screen.blit(self.tacocat.surf, self.tacocat.rect)
+                self.screen.blit(self.whiskers.surf, self.whiskers.rect)
+            pygame.display.update()
+            self.clock.tick(24)
 
         pygame.quit()
 
