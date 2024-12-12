@@ -28,9 +28,7 @@ class StartMenu:
         self.root.title(windowtitle)
 
         self.difficultySetting = None
-        self.difficulties = {"Easy" : "0",
-                             "Normal" : "1",
-                             "Hard" : "2"}
+        self.difficulties = (("Easy",0),("Hard",1))
         self.currentDifficulty = None
         self.startButton = None
         self.titleLabelText = tk.StringVar()
@@ -39,7 +37,7 @@ class StartMenu:
     def create_titleLabel(self,labeltext="Back in the 80s\nSpace Shooter!"):
         self.titleLabelText.set(labeltext)
         self.titleLabel = tk.Label(self.root, textvariable=self.titleLabelText)
-        self.titleLabel.grid(row=0, column=0)
+        self.titleLabel.pack()
 
     def create_difficultySetting(self):
         for setting in self.difficulties:
@@ -48,7 +46,7 @@ class StartMenu:
 
     def create_startButton(self,buttontext="Start Game!"):
         self.startButton = tk.Button(self.root, text=buttontext, command=self.startButton_handler)
-        self.startButton.grid(row=1, column=1)
+        self.startButton.pack()
 
     def startButton_handler(self):
         game = Game()
@@ -76,9 +74,6 @@ class Game:
         elif difficulty == 1:
             self.playerHealth = 3
             self.enemyHealth = 8
-        elif difficulty >= 2:
-            self.playerHealth = 1
-            self.enemyHealth = 10
 
         while self.running:
             for event in pygame.event.get():
