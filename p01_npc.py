@@ -18,19 +18,19 @@
 import pygame, random
 
 class NPC(pygame.sprite.Sprite):
-    move_distance = 15
     directions = ["north", "east", "south", "west"]
 
-    def __init__(self, screen_size):
+    def __init__(self, screen_size, speed):
         print("Spawning NPC")
         self.screen_size = screen_size
         super().__init__()
         self.surf = pygame.image.load('images/ufo.png').convert_alpha()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
-        self.rect.move_ip(self.screen_size[0], self.screen_size[1] // 4)
+        self.rect.move_ip(self.screen_size[0], self.screen_size[1] // 3)
         self.path = random.choice(self.directions)
         self.position = [0, 0]
+        self.move_distance = speed
 
     def get_direction(self):
         if self.rect.bottom >= (self.screen_size[1]):

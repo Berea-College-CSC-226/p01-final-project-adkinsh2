@@ -62,15 +62,13 @@ class Game:
         self.screen = pygame.display.set_mode(self.size)
         self.screen.fill('#9CBEBA')
         self.clock = pygame.time.Clock()
-        self.player = Player(self.size)
-        self.doomShip = NPC(self.size)
-        self.playerAttack = Bullet(self.size)
         if difficulty == "easy":
-            self.playerHealth = 100
-            self.enemyHealth = 80
+            self.speed = 10
         elif difficulty == "hard":
-            self.playerHealth = 5
-            self.enemyHealth = 200
+            self.speed = 20
+        self.player = Player(self.size)
+        self.doomShip = NPC(self.size,self.speed)
+        self.playerAttack = Bullet(self.size)
 
     def run(self):
         while self.running:
@@ -78,17 +76,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
             if pygame.sprite.spritecollide(self.player, [self.doomShip], False):
-                self.playerHealth -= 1
-                if self.playerHealth < 1:
-                    font = pygame.font.SysFont("ComicSans", 36)
-                    txt = font.render('Game over...', True, "red")
-                    self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
+                font = pygame.font.SysFont("ComicSans", 36)
+                txt = font.render('Game over...', True, "red")
+                self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
             elif pygame.sprite.spritecollide(self.doomShip, [self.playerAttack], False):
-                self.enemyHealth -= 1
-                if self.enemyHealth < 1:
-                    font = pygame.font.SysFont("ComicSans", 36)
-                    txt = font.render('You won!', True, "green")
-                    self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
+                font = pygame.font.SysFont("ComicSans", 36)
+                txt = font.render('You won!', True, "green")
+                self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
             else:
                 self.player.movement(pygame.key.get_pressed())
                 self.doomShip.movement()
