@@ -66,11 +66,11 @@ class Game:
         self.doomShip = NPC(self.size)
         self.playerAttack = Bullet(self.size)
         if difficulty == "easy":
-            self.playerHealth = 50
-            self.enemyHealth = 50
+            self.playerHealth = 100
+            self.enemyHealth = 80
         elif difficulty == "hard":
             self.playerHealth = 5
-            self.enemyHealth = 100
+            self.enemyHealth = 200
 
     def run(self):
         while self.running:
