@@ -43,7 +43,7 @@ class NPC(pygame.sprite.Sprite):
 
         :return: None
         """
-        if self.rect.bottom >= self.screen_size[1]:
+        if self.rect.bottom >= (self.screen_size[1]//3):
             self.path = "north"
         if self.rect.top <= 0:
             self.path = "south"
@@ -53,6 +53,7 @@ class NPC(pygame.sprite.Sprite):
             self.path = "west"
         elif random.random() > .95:
             self.path = random.choice(self.directions)
+
 
     def movement(self):
         """
@@ -68,9 +69,9 @@ class NPC(pygame.sprite.Sprite):
             self.position[1] += self.move_distance
         if self.path == "east":
             self.rect.move_ip(self.move_distance, 0)
-            self.position[0] -= self.move_distance
+            self.position[0] += self.move_distance
         if self.path == "west":
             self.rect.move_ip(-self.move_distance, 0)
-            self.position[0] += self.move_distance
+            self.position[0] -= self.move_distance
 
         self.get_direction()
