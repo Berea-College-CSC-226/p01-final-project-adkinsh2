@@ -58,3 +58,13 @@
 On the starting screen, select a difficulty, which will determine the number of times you can get hit before a game over,
 and the number of times the ufo has to get hit before you win.
 Press start, then dodge the ufo until the laser bounces into the ufo enough times to destroy it.
+
+### Reflection
+
+  My inspiration was based on games where your aim is to dodge enemies, these games usually having multiple difficulties.
+  I also wanted to utilize tkinter as I wanted to prove my understandings of it in this project. 
+  I used radio buttons as they would let you choose one and only one option that I could pass into the game class.
+  I originally wanted to have the user manually attack by pressing a button, button after having complications with trying to spawn a class within another while also handling collision,
+  I had to make the attack its own entity, and leave the win condition up to random chance.
+  This game helped me coonect two different elements together, and it also gave me a chance to plan out my own code,
+  rather than be told the exact instructions to follow and how to solve a pre-determined problem.
