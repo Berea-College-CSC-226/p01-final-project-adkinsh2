@@ -25,14 +25,14 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.image.load('images/rocket.png').convert_alpha()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
-        self.rect.move_ip(self.screen_size[0]//2, self.screen_size[1]//2)
+        self.rect.move_ip(0, self.screen_size[1] // 2)
 
     def movement(self, keys):
         if keys[pygame.K_UP]:
-            self.rect.move_ip(0, -3)
+            self.rect.move_ip(0, -10)
         elif keys[pygame.K_DOWN]:
-            self.rect.move_ip(0, 3)
+            self.rect.move_ip(0, 10)
         if keys[pygame.K_RIGHT]:
-            self.rect.move_ip(3, 0)
+            self.rect.move_ip(10, 0)
         elif keys[pygame.K_LEFT]:
-            self.rect.move_ip(-3, 0)
+            self.rect.move_ip(-10, 0)

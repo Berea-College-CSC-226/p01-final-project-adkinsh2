@@ -16,7 +16,7 @@
 ####################################################################################
 
 import tkinter as tk
-import pygame, random
+import pygame
 from p01_npc import NPC
 from p01_player import Player
 from p01_bullet import Bullet
@@ -29,11 +29,11 @@ class StartMenu:
         self.root.title(windowtitle)
 
         self.difficultySetting = None
-        self.difficulties = (("Easy",0),("Hard",1))
-        self.currentDifficulty = None
+        self.difficulties = (("Easy","easy"),("Hard","hard"))
         self.startButton = None
         self.titleLabelText = tk.StringVar()
         self.titleLabel = None
+        self.var = tk.StringVar()
 
     def create_titleLabel(self,labeltext="Back in the 80s\nSpace Shooter!"):
         self.titleLabelText.set(labeltext)
@@ -42,7 +42,7 @@ class StartMenu:
 
     def create_difficultySetting(self):
         for setting in self.difficulties:
-            r = tk.Radiobutton(self.root, text=setting[0], value=setting[1], variable = self.currentDifficulty)
+            r = tk.Radiobutton(self.root, text=setting[0], value=setting[1], variable = self.var)
             r.pack()
 
     def create_startButton(self,buttontext="Start Game!"):
@@ -50,58 +50,53 @@ class StartMenu:
         self.startButton.pack()
 
     def startButton_handler(self):
-        game = Game()
-        game.run(self.currentDifficulty)
+        currentDifficulty = self.var.get()
+        game = Game(currentDifficulty)
+        game.run()
 
 class Game:
-    def __init__(self):
+    def __init__(self,difficulty):
         self.size = 800, 600
         self.running = True
         pygame.init()
         self.screen = pygame.display.set_mode(self.size)
-        self.screen.fill('#24026D')
+        self.screen.fill('#9CBEBA')
         self.clock = pygame.time.Clock()
-        self.player = Player(self.size) #TODO set these to respective classes
+        self.player = Player(self.size)
         self.doomShip = NPC(self.size)
-        self.playerAttack = Bullet("player",self.size)
-        self.enemyAttack = Bullet("enemy",self.size)
-        self.playerHealth = 100
-        self.enemyHealth = 100
-
-    def run(self,difficulty):
-        if difficulty == 0:
+        self.playerAttack = Bullet(self.size)
+        if difficulty == "easy":
             self.playerHealth = 50
             self.enemyHealth = 50
-        elif difficulty == 1:
-            self.playerHealth = 30
-            self.enemyHealth = 80
+        elif difficulty == "hard":
+            self.playerHealth = 5
+            self.enemyHealth = 100
 
+    def run(self):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            if pygame.sprite.spritecollide(self.player, [self.enemyAttack], False):
+            if pygame.sprite.spritecollide(self.player, [self.doomShip], False):
                 self.playerHealth -= 1
-                if self.playerHealth == 500:
+                if self.playerHealth < 1:
                     font = pygame.font.SysFont("ComicSans", 36)
-                    txt = font.render('Game over...', True, "#E83E57")
+                    txt = font.render('Game over...', True, "red")
                     self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
-            if pygame.sprite.spritecollide(self.doomShip, [self.playerAttack], False):
+            elif pygame.sprite.spritecollide(self.doomShip, [self.playerAttack], False):
                 self.enemyHealth -= 1
-                if self.enemyHealth == 200:
+                if self.enemyHealth < 1:
                     font = pygame.font.SysFont("ComicSans", 36)
-                    txt = font.render('Congratulations! You win', True, "#5EE1F3")
-                    self.screen.blit(txt, (self.size[0] // 2, self.size[1] - 100))
+                    txt = font.render('You won!', True, "green")
+                    self.screen.blit(txt, (self.size[0]//2, self.size[1]-100))
             else:
                 self.player.movement(pygame.key.get_pressed())
                 self.doomShip.movement()
                 self.playerAttack.movement()
-                self.enemyAttack.movement()
                 self.screen.fill('#9CBEBA')
                 self.screen.blit(self.player.surf, self.player.rect)
                 self.screen.blit(self.doomShip.surf, self.doomShip.rect)
                 self.screen.blit(self.playerAttack.surf, self.playerAttack.rect)
-                self.screen.blit(self.enemyAttack.surf, self.enemyAttack.rect)
             pygame.display.update()
             self.clock.tick(24)
 

@@ -19,21 +19,45 @@ import pygame
 import random
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, user, screen_size):
+    move_distance = 10
+    directions = ["north", "east", "south", "west"]
+
+    def __init__(self, screen_size):
         super().__init__()
         self.screen_size = screen_size
-        self.user = user
-        if self.user == "player":
-            self.surf = pygame.image.load('images/laser.png').convert_alpha()
-        if self.user == "enemy":
-            self.surf = pygame.image.load('images/fireball.png').convert_alpha()
+        self.surf = pygame.image.load('images/laser.png').convert_alpha()
         self.surf.set_colorkey((255, 255, 255), pygame.RLEACCEL)
         self.rect = self.surf.get_rect()
         self.rect.move_ip(self.screen_size[0]//2, self.screen_size[1]//2)
-        self.velocity = 5
+        self.path = random.choice(self.directions)
+        self.velocity = 20
+        self.position = [0, 0]
+
+    def get_direction(self):
+        if self.rect.bottom >= (self.screen_size[1] // 3):
+            self.path = "north"
+        if self.rect.top <= 0:
+            self.path = "south"
+        if self.rect.left <= 0:
+            self.path = "east"
+        if self.rect.right >= self.screen_size[0]:
+            self.path = "west"
+        elif random.random() > .95:
+            self.path = random.choice(self.directions)
+
 
     def movement(self):
-        if (self.rect.top <= 0) or (self.rect.bottom <= self.screen_size[1]):
-            self.velocity = 0 - self.velocity
+        if self.path == "north":
+            self.rect.move_ip(0, -self.move_distance)
+            self.position[1] -= self.move_distance
+        elif self.path == "south":
+            self.rect.move_ip(0, self.move_distance)
+            self.position[1] += self.move_distance
+        if self.path == "east":
+            self.rect.move_ip(self.move_distance, 0)
+            self.position[0] -= self.move_distance
+        if self.path == "west":
+            self.rect.move_ip(-self.move_distance, 0)
+            self.position[0] += self.move_distance
 
-        self.rect.move_ip(random.randrange(-3, 3), self.velocity)
+        self.get_direction()
